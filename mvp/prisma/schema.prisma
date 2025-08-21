@@ -1,0 +1,87 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+  // removed custom output so it defaults to node_modules/.prisma/client
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  String              @id @default(uuid())
+  name                String
+  email               String              @unique
+  passwordHash        String
+  role                Role                @default(USER)
+  subscriptionStatus  SubscriptionStatus  @default(INACTIVE)
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  // Relations
+  inventoryItems      InventoryItem[]
+  sales               Sale[]
+  subscription        Subscription?
+}
+
+model InventoryItem {
+  id        String   @id @default(uuid())
+  userId    String
+  name      String
+  sku       String   @unique
+  quantity  Int
+  price     Decimal  @db.Decimal(10,2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sales     Sale[]
+}
+
+model Sale {
+  id         String   @id @default(uuid())
+  userId     String
+  itemId     String
+  quantity   Int
+  totalPrice Decimal  @db.Decimal(10,2)
+  customer   String?
+  createdAt  DateTime @default(now())
+
+  // Relations
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item       InventoryItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+}
+
+model Subscription {
+  id                   String              @id @default(uuid())
+  userId               String              @unique
+  stripeCustomerId     String
+  stripeSubscriptionId String
+  planId               String
+  status               SubscriptionStatus  @default(INACTIVE)
+  currentPeriodEnd     DateTime
+  canceledAt           DateTime?
+  trialEndsAt          DateTime?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  // Relations
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  TRIALING
+  PAST_DUE
+  CANCELED
+  INCOMPLETE
+  INACTIVE
+}
