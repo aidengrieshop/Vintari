@@ -1,0 +1,136 @@
+### AUTH ROUTES
+
+# Register new user
+POST http://localhost:4000/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "test@example.com",
+  "password": "securePassword123"
+}
+
+###
+
+# Login user
+POST http://localhost:4000/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "securePassword123"
+}
+
+###
+
+# Get current user profile (requires auth)
+GET http://localhost:4000/auth/me
+Authorization: Bearer {{ token }}
+
+---
+
+### INVENTORY ROUTES
+
+# Get all inventory items
+GET http://localhost:3000/api/inventory
+Authorization: Bearer {{token}}
+
+###
+
+# Add new inventory item
+POST http://localhost:3000/api/inventory
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Product A",
+  "sku": "PROD-001",
+  "quantity": 100,
+  "price": 25.50
+}
+
+###
+
+# Update inventory item
+PUT http://localhost:3000/api/inventory/{{itemId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Product A (Updated)",
+  "quantity": 90,
+  "price": 27.00
+}
+
+###
+
+# Delete inventory item
+DELETE http://localhost:3000/api/inventory/{{itemId}}
+Authorization: Bearer {{token}}
+
+---
+
+### SALES ROUTES
+
+# Record a new sale
+POST http://localhost:3000/api/sales
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "itemId": "{{itemId}}",
+  "quantity": 2,
+  "totalPrice": 54.00,
+  "customer": "John Doe"
+}
+
+###
+
+# Get all sales
+GET http://localhost:3000/api/sales
+Authorization: Bearer {{token}}
+
+---
+
+### REPORTING ROUTES
+
+# Get dashboard data (summary)
+GET http://localhost:3000/api/reports/dashboard
+Authorization: Bearer {{token}}
+
+###
+
+# Get inventory report
+GET http://localhost:3000/api/reports/inventory
+Authorization: Bearer {{token}}
+
+###
+
+# Get sales report
+GET http://localhost:3000/api/reports/sales
+Authorization: Bearer {{token}}
+
+---
+
+### SUBSCRIPTION & PAYMENTS ROUTES (Stripe)
+
+# Create subscription checkout session
+POST http://localhost:3000/api/payments/subscribe
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "planId": "basic_monthly"
+}
+
+###
+
+# Webhook endpoint (Stripe calls this, not you)
+POST http://localhost:3000/api/payments/webhook
+Content-Type: application/json
+Stripe-Signature: {{stripeSignature}}
+
+{
+  "id": "evt_test",
+  "type": "checkout.session.completed"
+}

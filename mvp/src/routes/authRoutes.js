@@ -1,7 +1,93 @@
 import express from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import prisma from '..prismaClient.js'
+import prisma from '../prismaClient.js'
+import { Prisma } from '@prisma/client'
 
 const router = express.Router()
 
+//--------------------Register--------------------
+
+// Endpoint to register a new user
+router.post('/register', async (req, res) => {
+    const {name, email, password} = req.body
+
+    if (!name || !email || !password) {
+        return res.status(400).json({ error: "Name, email, and password are required" });
+    }
+
+    try {
+    // Encrypt password before it is sent to db
+    const hashedPassword = await bcrypt.hash(password, 10)
+        const user = await prisma.User.create({
+            data: {
+                name,
+                email,
+                passwordHash: hashedPassword
+            }
+        })
+
+        // Create default inventory item
+
+        await prisma.InventoryItem.create({
+          data: {
+            userId: user.id,
+            name: 'Default Item, add some more to get started!',
+            sku: `DEFAULT-${Date.now()}`, // unique
+            quantity: 1,
+            price: new Prisma.Decimal(0)
+          }
+        })
+
+        // Create a token
+        const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: '4h'})
+        res.json({ token })        
+    } catch (error) {
+        console.log(error)
+
+        if (error.code === 'P2002') {
+            return res.status(409).json({ error: 'Email already exists' });
+        }
+
+        res.status(503).json({ error: "Registration failed"})
+    }
+})
+
+//--------------------Login--------------------
+
+router.post('/login', async (req, res) => {
+    const {email, password} = req.body
+
+    if (!email || !password) {
+        return res.status(400).json({ error: "Email and password are required" });
+    }
+
+    try {
+        const user = await prisma.User.findUnique({
+            where: {
+                email: email
+            }
+        })
+
+        // Validate that the user exist
+        if(!user) {return res.status(404).json({error: "User not found"})}
+
+        // Validate that the password is correct
+        const passwordIsValid = await bcrypt.compare(password, user.passwordHash)
+        if(!passwordIsValid) {return res.status(401).json({error: "Invalid password"})}
+
+        console.log(user)
+
+        // User is authenticated
+        const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: '4h'})
+        res.json({ token })
+        
+    } catch (error) {
+        console.log(error.message)
+        res.status(503).json({error: "Login failed"})
+    }
+})
+
+//--------------------Get Profile--------------------
+
+export default router
