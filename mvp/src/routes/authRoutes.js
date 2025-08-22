@@ -59,6 +59,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     const {email, password} = req.body
 
+    // Find user in db
     if (!email || !password) {
         return res.status(400).json({ error: "Email and password are required" });
     }
@@ -90,6 +91,8 @@ router.post('/login', async (req, res) => {
 //--------------------Get Profile--------------------
 
 router.get('/me', authMiddleware, async (req, res) => {
+    
+    // Get user information from db
     try {
         const user = await prisma.User.findUnique({
             where: {
