@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import prisma from '../prismaClient.js'
 import { Prisma } from '@prisma/client'
+import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router()
 
@@ -76,8 +77,6 @@ router.post('/login', async (req, res) => {
         const passwordIsValid = await bcrypt.compare(password, user.passwordHash)
         if(!passwordIsValid) {return res.status(401).json({error: "Invalid password"})}
 
-        console.log(user)
-
         // User is authenticated
         const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: '4h'})
         res.json({ token })
@@ -89,5 +88,31 @@ router.post('/login', async (req, res) => {
 })
 
 //--------------------Get Profile--------------------
+
+router.get('/me', authMiddleware, async (req, res) => {
+    try {
+        const user = await prisma.User.findUnique({
+            where: {
+                id: req.userId
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                createdAt: true
+            }
+        })
+
+        if(!user) {
+            return res.status(404).json({error: "User not found"})
+        }
+
+        res.json(user)
+
+    } catch (error) {
+        console.error(error)
+        res.status(503).json({error: "Failed to fetch user info"})
+    }
+})
 
 export default router
