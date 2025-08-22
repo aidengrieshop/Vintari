@@ -91,11 +91,8 @@ router.post('/login', async (req, res) => {
 //--------------------Get Profile--------------------
 
 router.get('/me', authMiddleware, async (req, res) => {
-<<<<<<< HEAD
     
     // Get user information from db
-=======
->>>>>>> 3a466c4e6e1743f9b957d530c656760e4e47a583
     try {
         const user = await prisma.User.findUnique({
             where: {
