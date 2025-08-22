@@ -4,6 +4,8 @@ import { Prisma } from '@prisma/client'
 
 const router = express.Router()
 
+//--------------------Get Items--------------------
+
 router.get('/', async (req, res) => {
 
     // Find items
@@ -23,8 +25,11 @@ router.get('/', async (req, res) => {
     }
 })
 
+//--------------------Create Item--------------------
+
 router.post('/', async (req, res) => {
     const { name, sku, quantity, price } = req.body
+    const userId = req.userId
 
     // Add item
     try {
@@ -37,6 +42,7 @@ router.post('/', async (req, res) => {
                 price
             }
         })
+        
     // Return item to user
         res.json(item)
 
@@ -45,6 +51,8 @@ router.post('/', async (req, res) => {
         res.status(503).json({error: "Failed to add item"})
     }
 })
+
+//--------------------Update item--------------------
 
 router.put('/:id', async (req, res) => {
     const { id } = req.params
@@ -85,13 +93,15 @@ router.put('/:id', async (req, res) => {
     }
 })
 
+//--------------------Delete Item--------------------
+
 router.delete('/:id', async (req, res) => {
     const { id } = req.params
     const userId = req.userId
 
     // Delete item while checking permissions
     try {
-        const deletedItem = await prisma.inventoryItem.findUnique({
+        const deletedItem = await prisma.inventoryItem.deleteMany({
             where: {
                 id,
                 userId
@@ -108,8 +118,5 @@ router.delete('/:id', async (req, res) => {
         res.status(503).json({error: "Failed to delete item"})
     }
 } )
-
-
-
 
 export default router

@@ -13,7 +13,7 @@ Content-Type: application/json
 ###
 
 # Login user
-POST http://localhost:4000/auth/login
+POST http://localhost:4000/api/auth/login
 Content-Type: application/json
 
 {
@@ -32,8 +32,9 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkZTFkYTRmLTFjY2It
 ### INVENTORY ROUTES
 
 # Get all inventory items
-GET http://localhost:4000/inventory
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkZTFkYTRmLTFjY2ItNGY0NC05NDhkLWQ4NTNjNTRlNTI5MSIsImlhdCI6MTc1NTgyODI1NywiZXhwIjoxNzU1ODQyNjU3fQ.TotiJ8mnHOlDYVLGj6wO19waBRIB1JdxGC-Zi2F1bwc
+GET http://localhost:4000/api/inventory
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkZTFkYTRmLTFjY2ItNGY0NC05NDhkLWQ4NTNjNTRlNTI5MSIsImlhdCI6MTc1NTg5NTM5NiwiZXhwIjoxNzU1OTA5Nzk2fQ.u07bpaA1mGaIsZWQy5-LlrwLiPPZ29FDBcV5amOC4Kg
+
 
 ###
 
@@ -68,29 +69,29 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkZTFkYTRmLTFjY2It
 
 # Delete inventory item
 DELETE http://localhost:4000/inventory/b3736327-b8e1-4b82-b204-8e210f429994
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkZTFkYTRmLTFjY2ItNGY0NC05NDhkLWQ4NTNjNTRlNTI5MSIsImlhdCI6MTc1NTgzMDYzOSwiZXhwIjoxNzU1ODQ1MDM5fQ.5wqCbEQcHezZAiRlbN_XB--BcnuzOBnA6IKPXL3RX-4
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkZTFkYTRmLTFjY2ItNGY0NC05NDhkLWQ4NTNjNTRlNTI5MSIsImlhdCI6MTc1NTg5Mjk2OSwiZXhwIjoxNzU1OTA3MzY5fQ.BLu9g3Jx0NKXv-vUASR6N09cj8nibmu4-ixpcbNQTpM
 
 ---
 
 ### SALES ROUTES
 
 # Record a new sale
-POST http://localhost:3000/api/sales
+POST http://localhost:4000/api/sales
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkZTFkYTRmLTFjY2ItNGY0NC05NDhkLWQ4NTNjNTRlNTI5MSIsImlhdCI6MTc1NTg5Mjk2OSwiZXhwIjoxNzU1OTA3MzY5fQ.BLu9g3Jx0NKXv-vUASR6N09cj8nibmu4-ixpcbNQTpM
+
 
 {
-  "itemId": "{{itemId}}",
+  "itemId": "888ac0f6-9771-4f7f-a72a-74cb370f8c3d",
   "quantity": 2,
-  "totalPrice": 54.00,
   "customer": "John Doe"
 }
 
 ###
 
 # Get all sales
-GET http://localhost:3000/api/sales
-Authorization: Bearer {{token}}
+GET http://localhost:4000/api/sales
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkZTFkYTRmLTFjY2ItNGY0NC05NDhkLWQ4NTNjNTRlNTI5MSIsImlhdCI6MTc1NTg5Mjk2OSwiZXhwIjoxNzU1OTA3MzY5fQ.BLu9g3Jx0NKXv-vUASR6N09cj8nibmu4-ixpcbNQTpM
 
 ---
 
