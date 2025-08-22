@@ -8,8 +8,8 @@ import { fileURLToPath } from 'url';
 import authRoutes from './routes/authRoutes.js';
 import inventoryRoutes from './routes/inventoryRoutes.js';
 //import paymentsRoutes from './routes/paymentsRoutes.js';
-//import reportsRoutes from './routes/reportsRoutes.js';
-//import salesRoutes from './routes/salesRoutes.js';
+import reportsRoutes from './routes/reportsRoutes.js';
+import salesRoutes from './routes/salesRoutes.js';
 
 // Middleware
 import authMiddleware from './middleware/authMiddleware.js';
@@ -38,11 +38,11 @@ app.get('/', (req,res) => {
   res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
-app.use('/auth', authRoutes);
-app.use('/inventory', authMiddleware, inventoryRoutes);
-//app.use('/payments', paymentsRoutes);
-//app.use('/reports', reportsRoutes);
-//app.use('/sales', salesRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/inventory', authMiddleware, inventoryRoutes);
+//app.use('/api/payments', paymentsRoutes);
+app.use('/api/reports', reportsRoutes);
+app.use('/api/sales', authMiddleware, salesRoutes);
 
 // Start server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
