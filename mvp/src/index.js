@@ -6,13 +6,13 @@ import { fileURLToPath } from 'url';
 
 // Routes
 import authRoutes from './routes/authRoutes.js';
-//import inventoryRoutes from './routes/inventoryRoutes.js';
+import inventoryRoutes from './routes/inventoryRoutes.js';
 //import paymentsRoutes from './routes/paymentsRoutes.js';
 //import reportsRoutes from './routes/reportsRoutes.js';
 //import salesRoutes from './routes/salesRoutes.js';
 
 // Middleware
-//import authMiddleware from './middleware/authMiddleware.js';
+import authMiddleware from './middleware/authMiddleware.js';
 
 // Config
 dotenv.config();
@@ -39,7 +39,7 @@ app.get('/', (req,res) => {
 });
 
 app.use('/auth', authRoutes);
-//app.use('/inventory', authMiddleware, inventoryRoutes);
+app.use('/inventory', authMiddleware, inventoryRoutes);
 //app.use('/payments', paymentsRoutes);
 //app.use('/reports', reportsRoutes);
 //app.use('/sales', salesRoutes);

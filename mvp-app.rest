@@ -32,15 +32,15 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkZTFkYTRmLTFjY2It
 ### INVENTORY ROUTES
 
 # Get all inventory items
-GET http://localhost:3000/api/inventory
-Authorization: Bearer {{token}}
+GET http://localhost:4000/inventory
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkZTFkYTRmLTFjY2ItNGY0NC05NDhkLWQ4NTNjNTRlNTI5MSIsImlhdCI6MTc1NTgyODI1NywiZXhwIjoxNzU1ODQyNjU3fQ.TotiJ8mnHOlDYVLGj6wO19waBRIB1JdxGC-Zi2F1bwc
 
 ###
 
 # Add new inventory item
-POST http://localhost:3000/api/inventory
+POST http://localhost:4000/inventory
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkZTFkYTRmLTFjY2ItNGY0NC05NDhkLWQ4NTNjNTRlNTI5MSIsImlhdCI6MTc1NTgyODI1NywiZXhwIjoxNzU1ODQyNjU3fQ.TotiJ8mnHOlDYVLGj6wO19waBRIB1JdxGC-Zi2F1bwc
 
 {
   "name": "Product A",
@@ -52,12 +52,14 @@ Authorization: Bearer {{token}}
 ###
 
 # Update inventory item
-PUT http://localhost:3000/api/inventory/{{itemId}}
+PUT http://localhost:4000/inventory/b3736327-b8e1-4b82-b204-8e210f429994
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkZTFkYTRmLTFjY2ItNGY0NC05NDhkLWQ4NTNjNTRlNTI5MSIsImlhdCI6MTc1NTgyODI1NywiZXhwIjoxNzU1ODQyNjU3fQ.TotiJ8mnHOlDYVLGj6wO19waBRIB1JdxGC-Zi2F1bwc
+
 
 {
   "name": "Product A (Updated)",
+  "sku": "PROD-002",
   "quantity": 90,
   "price": 27.00
 }
@@ -65,8 +67,8 @@ Authorization: Bearer {{token}}
 ###
 
 # Delete inventory item
-DELETE http://localhost:3000/api/inventory/{{itemId}}
-Authorization: Bearer {{token}}
+DELETE http://localhost:4000/inventory/b3736327-b8e1-4b82-b204-8e210f429994
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkZTFkYTRmLTFjY2ItNGY0NC05NDhkLWQ4NTNjNTRlNTI5MSIsImlhdCI6MTc1NTgzMDYzOSwiZXhwIjoxNzU1ODQ1MDM5fQ.5wqCbEQcHezZAiRlbN_XB--BcnuzOBnA6IKPXL3RX-4
 
 ---
 
