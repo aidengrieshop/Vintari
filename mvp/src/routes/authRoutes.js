@@ -9,7 +9,6 @@ const router = express.Router()
 
 //--------------------Register--------------------
 
-// Endpoint to register a new user
 router.post('/register', async (req, res) => {
     const {name, email, password} = req.body
 
@@ -91,7 +90,7 @@ router.post('/login', async (req, res) => {
 //--------------------Get Profile--------------------
 
 router.get('/me', authMiddleware, async (req, res) => {
-    
+
     // Get user information from db
     try {
         const user = await prisma.User.findUnique({
