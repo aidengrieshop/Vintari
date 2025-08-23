@@ -40,8 +40,8 @@ app.get('/', (req,res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/inventory', authMiddleware, inventoryRoutes);
-//app.use('/api/payments', paymentsRoutes);
-app.use('/api/reports', reportsRoutes);
+//app.use('/api/payments', authMiddleware, paymentsRoutes);
+app.use('/api/reports', authMiddleware, reportsRoutes);
 app.use('/api/sales', authMiddleware, salesRoutes);
 
 // Start server
